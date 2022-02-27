@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 	"os"
 	"strconv"
 	"time"
 
 	"github.com/AgoraIO-Community/go-tokenbuilder/rtctokenbuilder"
+	"github.com/gin-gonic/contrib/static"
 	"github.com/gin-gonic/gin"
 )
 
@@ -39,17 +39,26 @@ os.Setenv("APP_CERTIFICATE", "0af92bf4b1a047778a50d2a4226de2cb");
   api.GET("/hello", func(c *gin.Context) {
 	  c.String(200, "Hello World!")
 	})
-	
-	//   api.LoadHTMLGlob("templates/home.html")
-	
-	api.Run(":8080")
+
+	// groups routes => /api + new route
+	api2 := api.Group("/api")
+
+	api2.GET("/ping", func(c *gin.Context) {
+        c.JSON(200, gin.H{
+            "message": "pong",
+        })
+    })
+
+	api.Use(static.Serve("/", static.LocalFile("./views", true)))
+
+
+	api.Run()
 }
 
 func getRtcToken(c *gin.Context) {
 	log.Printf("rtc token\n")
 	// get param values
 	channelName, uidStr, role, expireTimestamp, err := parseRtcParams(c)
-	// c.HTML(http.StatusOK, "home.html", nil);
 	if err != nil {
 	  c.Error(err)
 	  c.AbortWithStatusJSON(400, gin.H{
