@@ -25,30 +25,17 @@ func main() {
   	appIDEnv, appIDExists := os.LookupEnv("APP_ID")
 	appCertEnv, appCertExists := os.LookupEnv("APP_CERTIFICATE")
 
-  if !appIDExists || !appCertExists {
-    log.Fatal("FATAL ERROR: ENV not properly configured, check APP_ID and APP_CERTIFICATE")
-  } else {
-    appID = appIDEnv
-    appCertificate = appCertEnv
-  }
+	if !appIDExists || !appCertExists {
+		log.Fatal("FATAL ERROR: ENV not properly configured, check APP_ID and APP_CERTIFICATE")
+	} else {
+		appID = appIDEnv
+		appCertificate = appCertEnv
+	}
 
-  api := gin.Default()
+	api := gin.Default()
   
-  api.GET("rtc/:channelName/:role/:uid/", getRtcToken)
+  	api.GET("rtc/:channelName/:role/:uid/", getRtcToken)
   
-  api.GET("/hello", func(c *gin.Context) {
-	  c.String(200, "Hello World!")
-	})
-
-	// groups routes => /api + new route
-	api2 := api.Group("/api")
-
-	api2.GET("/ping", func(c *gin.Context) {
-        c.JSON(200, gin.H{
-            "message": "pong",
-        })
-    })
-
 	api.Use(static.Serve("/", static.LocalFile("./views", true)))
 
 
@@ -113,16 +100,8 @@ func parseRtcParams(c *gin.Context) (channelName, uidStr string, role rtctokenbu
 }
 
 func generateRtcToken(channelName, uidStr string, role rtctokenbuilder.Role, expireTimestamp uint32) (rtcToken string, err error) {
-
-	//   uid64, parseErr := strconv.ParseUint(uidStr, 10, 64)
-	//   if parseErr != nil {
-	// 	err = fmt.Errorf("failed to parse uidStr: %s, to uint causing error: %s", uidStr, parseErr)
-	// 	return "", err
-	//   }
-  
-	//   uid := uint32(uid64) // convert uid from uint64 to uint 32
-	  log.Printf("Building Token with uid: %s\n", uidStr)
-	  rtcToken, err = rtctokenbuilder.BuildTokenWithUserAccount(appID, appCertificate, channelName, uidStr, role, expireTimestamp)
-	  return rtcToken, err
+	log.Printf("Building Token with uid: %s\n", uidStr)
+	rtcToken, err = rtctokenbuilder.BuildTokenWithUserAccount(appID, appCertificate, channelName, uidStr, role, expireTimestamp)
+	return rtcToken, err
 	  
 }
