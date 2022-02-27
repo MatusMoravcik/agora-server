@@ -16,7 +16,7 @@ var appID, appCertificate string
 
 
 func main() {
-
+	gin.SetMode(gin.ReleaseMode)
 
 os.Setenv("APP_ID", "6bda2bd81c9f4f77bd85b0e99f430a42");
 os.Setenv("APP_CERTIFICATE", "0af92bf4b1a047778a50d2a4226de2cb");
