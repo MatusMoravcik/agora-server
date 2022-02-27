@@ -18,8 +18,8 @@ var appID, appCertificate string
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 
-os.Setenv("APP_ID", "6bda2bd81c9f4f77bd85b0e99f430a42");
-os.Setenv("APP_CERTIFICATE", "0af92bf4b1a047778a50d2a4226de2cb");
+	os.Setenv("APP_ID", "6bda2bd81c9f4f77bd85b0e99f430a42");
+	os.Setenv("APP_CERTIFICATE", "0af92bf4b1a047778a50d2a4226de2cb");
 	
 
   	appIDEnv, appIDExists := os.LookupEnv("APP_ID")
@@ -114,15 +114,15 @@ func parseRtcParams(c *gin.Context) (channelName, uidStr string, role rtctokenbu
 
 func generateRtcToken(channelName, uidStr string, role rtctokenbuilder.Role, expireTimestamp uint32) (rtcToken string, err error) {
 
-	  uid64, parseErr := strconv.ParseUint(uidStr, 10, 64)
-	  if parseErr != nil {
-		err = fmt.Errorf("failed to parse uidStr: %s, to uint causing error: %s", uidStr, parseErr)
-		return "", err
-	  }
+	//   uid64, parseErr := strconv.ParseUint(uidStr, 10, 64)
+	//   if parseErr != nil {
+	// 	err = fmt.Errorf("failed to parse uidStr: %s, to uint causing error: %s", uidStr, parseErr)
+	// 	return "", err
+	//   }
   
-	  uid := uint32(uid64) // convert uid from uint64 to uint 32
-	  log.Printf("Building Token with uid: %d\n", uid)
-	  rtcToken, err = rtctokenbuilder.BuildTokenWithUID(appID, appCertificate, channelName, uid, role, expireTimestamp)
+	//   uid := uint32(uid64) // convert uid from uint64 to uint 32
+	  log.Printf("Building Token with uid: %s\n", uidStr)
+	  rtcToken, err = rtctokenbuilder.BuildTokenWithUserAccount(appID, appCertificate, channelName, uidStr, role, expireTimestamp)
 	  return rtcToken, err
 	  
 }
