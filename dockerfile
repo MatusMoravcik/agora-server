@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 FROM golang:1.17-alpine AS builder
 RUN mkdir /build
 ADD go.mod go.sum main.go /build/
