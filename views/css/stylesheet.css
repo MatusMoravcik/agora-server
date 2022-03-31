@@ -1,7 +1,33 @@
-body {
-    font-family: Arial;
-  }
-  
-  h1 {
-    color: red;
-  }
+body, html {
+  height: 100%;
+}
+
+.bg {
+  background-image: url("https://wallpaperaccess.com/full/31193.jpg");
+  height: 100%;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+#image {
+  position: absolute;
+}
+#text {
+  position: absolute;
+  color: white;
+
+  margin-left: 30%;
+  margin-top: auto;
+  font-size: 100px;
+  font-weight: bold;
+  text-align: center;
+  left: 150px;
+  top: 350px;
+}
